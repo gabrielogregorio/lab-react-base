@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReactJs</title>
+</head>
+<body>
+  <div id="app">
+
+  </div>
+
+  <!-- Carregamento do ReactJS Versão Dev   -->
+  <!-- https://pt-br.reactjs.org/docs/cdn-links.html -->
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+  <!-- REACT DOM é para injetar os componentes react na página -->
+
+
+<script>
+
+  /*
+    1. Forma de pssar informação
+      A informação vai do componente 1 para o 4, sempre de cima para baixo.
+      Sim, tem que ir descendo até o final, pode ser até o props completo
+      Ao contrário é mais custoso
+
+    2. Context API. Permite que um pai passe informação para um filho sem precisar passar pelos demais filhos. Tem que ser pai para filho!
+  */
+
+  const emailContext = React.createContext('email');
+  function Componente1() {
+    const email = 'gab.greg@silva.com.br';
+
+    return (
+      // Quem irá prover o valor
+      // Tem que usar o value!
+      React.createElement(emailContext.Provider, {value: email},
+        React.createElement('div', {className: 'componente 1', id: 'idDoComponente'},
+          React.createElement(Componente2)
+        )
+      )
+    )
+  }
+  function Componente2() {
+    return (
+      React.createElement('div', {className: 'componente 2'},
+        React.createElement(Componente3)
+        )
+    )
+  }
+  function Componente3() {
+    const PrimeiroNome = 'Gabriel';
+    return (
+      React.createElement('div', {className: 'componente 3'},
+        React.createElement(Componente4, {nome: PrimeiroNome})
+        )
+    )
+  }
+  function Componente4(minha_props) {
+    return (
+      React.createElement(emailContext.Consumer, null,
+        (emailObitido) => (
+          React.createElement('div', {className: 'componente 4'},
+          React.createElement('p', null, emailObitido)
+         )
+        )
+      )
+    )
+  }
+
+  function UmComponenteQualquer() {
+    // Tag para criar, propriedades e filhos
+    return React.createElement('div', {className: 'componentes'},
+      React.createElement(Componente1)
+    )
+  }
+
+  ReactDOM.render(
+    React.createElement(UmComponenteQualquer),
+    document.getElementById('app')
+  )
+</script>
+
+</body>
+</html>
